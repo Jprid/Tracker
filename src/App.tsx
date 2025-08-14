@@ -1,56 +1,14 @@
 import './App.css'
 import {createRef, Component, type JSX, type RefObject} from 'react';
-import {StatsComponent, SubstanceTable, EntryTerminal} from "./stats/Stats";
+import {StatsComponent} from "./stats/Stats";
 import type {SubstanceEntry} from "./interfaces.ts";
+import {SubstanceTable} from "./stats/SubstanceTable.tsx";
+import {EntryTerminal} from "./stats/EntryTerminal.tsx";
 
-class EntryStore {
-    private entries: SubstanceEntry[] = [];
-    private listeners: (() => void)[] = [];
-
-    public getEntries(): SubstanceEntry[] {
-        return [...this.entries];
-    }
-
-    public addEntry(entry: Omit<SubstanceEntry, 'id'>): SubstanceEntry {
-        const newEntry: SubstanceEntry = {
-            ...entry,
-            id: Math.random().toString(36).substr(2, 9)
-        };
-        this.entries.push(newEntry);
-        this.notifyListeners();
-        return newEntry;
-    }
-
-    public deleteEntry(id: string): SubstanceEntry | null {
-        const index = this.entries.findIndex(e => e.id === id);
-        if (index === -1) return null;
-
-        const deletedEntry = this.entries[index];
-        this.entries.splice(index, 1);
-        this.notifyListeners();
-        return deletedEntry;
-    }
-
-    public findEntry(id: string): SubstanceEntry | undefined {
-        return this.entries.find(e => e.id === id);
-    }
-
-    public getEntryCount(): number {
-        return this.entries.length;
-    }
-
-    public subscribe(listener: () => void): () => void {
-        this.listeners.push(listener);
-        return () => {
-            this.listeners = this.listeners.filter(l => l !== listener);
-        };
-    }
-
-    private notifyListeners(): void {
-        this.listeners.forEach(listener => listener());
-    }
-}
-
+const sampleData: SubstanceEntry[] = [
+    { id: 1, time: '09:00', substance: 'Caffeine', dose: 60, notes: '' },
+    { id: 2, time: '10:00', substance: 'Nicotine', dose: 6, notes: 'Evening supplement' }
+];
 interface AppState {
     entries: SubstanceEntry[];
 }
@@ -58,9 +16,17 @@ class App extends Component<object, AppState> {
     private statsRef: RefObject<StatsComponent | null>;
     constructor(props: object) {
         super(props);
+        this.getStorageKey = this.getStorageKey.bind(this);
+        this.save = this.save.bind(this);
+        this.clear = this.clear.bind(this);
+        const key = this.getStorageKey();
+        let startingData: SubstanceEntry[] = sampleData;
+        if (localStorage.getItem(key) != null) {
+            startingData = JSON.parse(localStorage.getItem(key) as string);
+        }
         this.statsRef = createRef<StatsComponent>();
         this.state = {
-            entries: [],
+            entries: startingData,
         };
     }
 
@@ -72,26 +38,36 @@ class App extends Component<object, AppState> {
     }
 
     private addEntry = (entry: Omit<SubstanceEntry, 'id'>): void => {
+        const maxId: number = this.state.entries.length - 1;
         const newEntry: SubstanceEntry = {
             ...entry,
-            id: Math.random().toString(36).substring(2, 9)
+            id: maxId + 1
         };
 
         this.setState(prevState => ({
             entries: [...prevState.entries, newEntry],
-            notifications: [...prevState.notifications, `Added: ${newEntry.substance} ${newEntry.dose}mg`]
         }));
     };
 
-    private saveToDisk() {
 
+    private getStorageKey(): string {
+        return "_HABIT_TRACKER_LOCAL_STORAGE_" + new Date().getUTCMilliseconds().toString();
+    }
+
+    private clear(): void {
+        localStorage.removeItem(this.getStorageKey());
+        this.setState({entries: []});
     }
 
     private save(medium: string) {
-        const mediums = new Map([
-            ['disk', () => this.saveToDisk()],
-            ['browser', () => this.saveToBrowser()]
-        ]);
+        console.debug('Saving to ' + medium);
+        if (medium === 'disk') {
+            console.debug('not implemented');
+        } else {
+            const key = this.getStorageKey();
+            console.log('storage key ' + key);
+            localStorage.setItem(key, JSON.stringify([...this.state.entries]));
+        }
     }
 
     render(): JSX.Element {
@@ -99,10 +75,10 @@ class App extends Component<object, AppState> {
             <div className="page-container d-flex justify-content-center align-items-center flex-column w-full h-full">
                 <h1 className="text-2xl font-bold">Substance Tracker Dashboard</h1>
                 <div className="w-full d-flex flex-row w-full h-full">
-                    <StatsComponent  ref={this.statsRef} />
-                    <SubstanceTable onDataChange={this.handleTableDataChange} />
+                    <StatsComponent entries={this.state.entries} ref={this.statsRef} />
+                    <SubstanceTable entries={this.state.entries} onDataChange={this.handleTableDataChange} />
                 </div>
-                <EntryTerminal entries={this.state.entries} onAdd={this.addEntry}/>
+                <EntryTerminal entries={this.state.entries} onClear={this.clear} onAdd={this.addEntry} onSave={this.save}/>
             </div>
         );
     }

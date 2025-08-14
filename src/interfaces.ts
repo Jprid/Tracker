@@ -18,15 +18,23 @@ export interface SubstanceStatsMap {
 // Props interfaces
 export interface SubstanceTableProps {
     onDataChange: (data: SubstanceEntry[]) => void;
+    entries: SubstanceEntry[];
 }
 
 export interface SubstanceTableState {
     data: SubstanceEntry[];
 }
 
-// @ts-ignore
-export interface StatsComponentProps {}
+export interface StatsComponentProps {
+    entries: SubstanceEntry[];
+}
 
 export interface StatsComponentState {
     substanceStats: SubstanceStatsMap;
+}
+export interface EntryTerminalProps {
+    onAdd: (entry: Omit<SubstanceEntry, 'id'>) => void;
+    onSave: (medium: string) => void;
+    onClear: () => void;
+    entries: SubstanceEntry[];
 }
