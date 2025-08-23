@@ -2,8 +2,8 @@ import './App.css'
 import {createRef, Component, type JSX, type RefObject} from 'react';
 import {StatsComponent} from "./stats/Stats";
 import type {SubstanceEntry} from "./interfaces.ts";
-import {SubstanceTable} from "./stats/SubstanceTable.tsx";
-import {EntryTerminal} from "./stats/EntryTerminal.tsx";
+import {SubstanceTable} from "./stats/SubstanceTable";
+import {EntryTerminal} from "./EntryTerminal/EntryTerminal";
 
 const sampleData: SubstanceEntry[] = [
     { id: 1, time: '09:00', substance: 'Caffeine', dose: 60, notes: '' },
@@ -21,7 +21,7 @@ class App extends Component<object, AppState> {
         this.clear = this.clear.bind(this);
         const key = this.getStorageKey();
         let startingData: SubstanceEntry[] = sampleData;
-        if (localStorage.getItem(key) != null) {
+        if (localStorage.getItem(key) !== null) {
             startingData = JSON.parse(localStorage.getItem(key) as string);
         }
         this.statsRef = createRef<StatsComponent>();
@@ -30,10 +30,16 @@ class App extends Component<object, AppState> {
         };
     }
 
+    componentDidMount() {
+
+    }
+
     // This method will be passed to the table and will trigger stats updates
     private handleTableDataChange = (data: SubstanceEntry[]): void => {
         if (this.statsRef.current) {
             this.statsRef.current.handleDataChange(data);
+        } else {
+            console.warn('Stats component not mounted yet');
         }
     }
 
@@ -44,6 +50,7 @@ class App extends Component<object, AppState> {
             id: maxId + 1
         };
 
+        this.statsRef.current!.handleDataChange([...this.state.entries, newEntry]);
         this.setState(prevState => ({
             entries: [...prevState.entries, newEntry],
         }));
@@ -51,7 +58,7 @@ class App extends Component<object, AppState> {
 
 
     private getStorageKey(): string {
-        return "_HABIT_TRACKER_LOCAL_STORAGE_" + new Date().getUTCMilliseconds().toString();
+        return "_HABIT_TRACKER_LOCAL_STORAGE_" + new Date().toLocaleDateString();
     }
 
     private clear(): void {

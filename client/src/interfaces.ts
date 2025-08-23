@@ -9,10 +9,7 @@ export interface SubstanceEntry {
 export interface SubstanceStats {
     totalDose: number;
     count: number;
-}
-
-export interface SubstanceStatsMap {
-    [substance: string]: SubstanceStats;
+    frequency: number;
 }
 
 // Props interfaces
@@ -30,7 +27,7 @@ export interface StatsComponentProps {
 }
 
 export interface StatsComponentState {
-    substanceStats: SubstanceStatsMap;
+    substanceStats: { [key: string]: SubstanceStats};
 }
 export interface EntryTerminalProps {
     onAdd: (entry: Omit<SubstanceEntry, 'id'>) => void;

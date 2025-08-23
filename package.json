@@ -1,29 +1,15 @@
 {
   "name": "web-habit-tracker",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "version": "1.0.0",
+  "description": "this is for the monorepo used to run both the front and back end",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "start:client": "cd client && npm start",
+    "start:server": "cd server && ts-node server.ts",
+    "start": "concurrently \"npm run start:client\" \"npm run start:server\""
   },
-  "dependencies": {
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Jprid/WebHabitTracker.git"
   },
-  "devDependencies": {
-    "@eslint/js": "^9.33.0",
-    "@types/react": "^19.1.10",
-    "@types/react-dom": "^19.1.7",
-    "@vitejs/plugin-react": "^5.0.0",
-    "eslint": "^9.33.0",
-    "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-plugin-react-refresh": "^0.4.20",
-    "globals": "^16.3.0",
-    "typescript": "~5.8.3",
-    "typescript-eslint": "^8.39.1",
-    "vite": "^7.1.2"
-  }
+  "private": true
 }

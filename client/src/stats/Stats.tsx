@@ -1,6 +1,11 @@
 // Sample data for demonstration
-import {Component, JSX} from "react";
-import type {StatsComponentProps, StatsComponentState, SubstanceEntry, SubstanceStatsMap} from "../interfaces.ts";
+import {Component, type JSX} from "react";
+import type {
+    StatsComponentProps,
+    StatsComponentState,
+    SubstanceEntry,
+    SubstanceStats,
+} from "../interfaces.ts";
 
 /*
  *  StatsComponent
@@ -9,28 +14,39 @@ class StatsComponent extends Component<StatsComponentProps, StatsComponentState>
     constructor(props: StatsComponentProps) {
         super(props);
         this.state = {
-            substanceStats: {}
+            substanceStats: this.buildStatsData(props.entries)
         };
     }
 
     // This method will be called when the table emits data changes
     public handleDataChange = (data: SubstanceEntry[]): void => {
-        const stats: SubstanceStatsMap = {};
+        console.log('stats component received data change');
+        console.debug(data);
+        const stats = this.buildStatsData(data);
 
+        this.setState({ substanceStats: stats });
+    }
+
+
+
+    private buildStatsData(data: SubstanceEntry[]) {
+        const stats: { [key: string]: SubstanceStats } = {};
         data.forEach((entry: SubstanceEntry) => {
-            const { substance, dose } = entry;
-            if (stats[substance.toLowerCase()]) {
-                stats[substance].totalDose += dose;
-                stats[substance].count += 1;
+            const {substance, dose} = entry;
+            const key = substance.toLowerCase();
+            if (key in stats) {
+                stats[key].totalDose += dose;
+                stats[key].count += 1;
+                stats[key].frequency += 1;
             } else {
-                stats[substance.toLowerCase()] = {
+                stats[key] = {
                     totalDose: dose,
-                    count: 1
+                    count: 1,
+                    frequency: 1
                 };
             }
         });
-
-        this.setState({ substanceStats: stats });
+        return stats;
     }
 
     private calculateAverage(totalDose: number, count: number): string {
@@ -60,7 +76,7 @@ class StatsComponent extends Component<StatsComponentProps, StatsComponentState>
                 {substances.length === 0 ? (
                     <p className="text-gray-500">No data to display</p>
                 ) : (
-                    <div className="d-flex flex-column justify-content-space-evenly space-y-3 h-full">
+                    <div className="d-flex flex-column h-full">
                         {substances.map((substance: string) => {
                             const stats = substanceStats[substance];
                             return (

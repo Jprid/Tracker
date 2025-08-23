@@ -1,4 +1,4 @@
-import {Component, JSX} from "react";
+import {Component, type JSX} from "react";
 import type {EntryTerminalProps} from "../interfaces.ts";
 
 class EntryTerminalConstants {

@@ -1,4 +1,4 @@
-import {Component, JSX} from "react";
+import {Component, type JSX} from "react";
 import type {SubstanceEntry, SubstanceTableProps, SubstanceTableState} from "../interfaces.ts";
 
 class SubstanceTable extends Component<SubstanceTableProps, SubstanceTableState> {
