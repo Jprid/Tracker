@@ -1,4 +1,4 @@
-import knex, { Knex } from 'knex';
+import knex, { type Knex } from 'knex';
 import config from '../../knexfile.ts';
 
 let db: Knex | null = null;

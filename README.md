@@ -67,3 +67,23 @@ export default tseslint.config([
   },
 ])
 ```
+
+# Web Habit Tracker
+
+## Running as Electron Desktop App
+
+1. Build the web app:
+   ```
+   npm run build
+   ```
+2. Start Electron:
+   ```
+   npm run electron
+   ```
+
+## Packaging
+
+To build a desktop installer:
+```
+npm run electron-build
+```

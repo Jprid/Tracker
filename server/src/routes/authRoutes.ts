@@ -1,17 +1,7 @@
 import {Router, type Request, type Response} from 'express';
-import {generateTokens, refreshAccessToken} from "../services/authService.ts";
+import {refreshAccessToken} from "../services/authService.ts";
 
 const router = Router();
-
-router.post('/login', (_req: Request, res: Response) => {
-    // In a real app, validate credentials here
-    const tokens = generateTokens();
-    res.cookie('refreshToken', tokens.refreshToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-    });
-    res.json({ accessToken: tokens.accessToken });
-});
 
 router.post('/refresh', (req: Request, res: Response) => {
     const refreshToken = req.cookies.refreshToken;

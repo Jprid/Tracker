@@ -1,10 +1,21 @@
-import jwt from 'jsonwebtoken';
+import jwt, {type JwtPayload} from 'jsonwebtoken';
 import type { AccessTokenPayload, RefreshTokenPayload } from '../types/auth.ts';
 
 let currentAccessToken: string | null = null;
 let refreshToken: string | null = null;
 
 export function generateTokens(userId: number = 123, role: string = 'admin'): { accessToken: string; refreshToken: string } {
+    if (process.env.ACCESS_TOKEN && process.env.REFRESH_TOKEN) {
+        const token = jwt.decode(process.env.ACCESS_TOKEN);
+        if (token && ((token as JwtPayload)!.exp!) < Date.now() / 1000) {
+            return {
+                accessToken: process.env.ACCESS_TOKEN,
+                refreshToken: process.env.REFRESH_TOKEN,
+            };
+        } else {
+            console.warn('Token is invalid or expired, generating new tokens');
+        }
+    }
     const accessPayload: AccessTokenPayload = { userId, role };
     const refreshPayload: RefreshTokenPayload = { userId };
 
@@ -32,16 +43,3 @@ export function refreshAccessToken(providedRefreshToken: string): { accessToken:
         return generateTokens();
     }
 }
-
-// Initialize tokens on startup
-const initialTokens = generateTokens();
-currentAccessToken = initialTokens.accessToken;
-refreshToken = initialTokens.refreshToken;
-console.log('Initial access token:', currentAccessToken);
-
-// Auto-refresh access token every 10 minutes
-setInterval(() => {
-    if (refreshToken) {
-        refreshAccessToken(refreshToken);
-    }
-}, 10 * 60 * 1000);

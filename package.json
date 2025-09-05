@@ -2,14 +2,37 @@
   "name": "web-habit-tracker",
   "version": "1.0.0",
   "description": "this is for the monorepo used to run both the front and back end",
+  "main": "main.js",
   "scripts": {
-    "start:client": "cd client && npm start",
-    "start:server": "cd server && ts-node server.ts",
-    "start": "concurrently \"npm run start:client\" \"npm run start:server\""
+    "dev": "tsx scripts/startApplication.ts",
+    "build": "npm run build --prefix server && npm run build --prefix client",
+    "migrate": "npm run migrate --prefix server",
+    "electron": "electron .",
+    "electron-build": "electron-builder"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/Jprid/WebHabitTracker.git"
   },
-  "private": true
+  "private": true,
+  "srcDir": ".",
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "allowImportingTsExtensions": true,
+  "dependencies": {
+    "tsx": "^4.20.5"
+  },
+  "devDependencies": {
+    "electron": "^29.0.0",
+    "electron-builder": "^24.6.0"
+  },
+  "build": {
+    "productName": "Habit Tracker",
+    "files": [
+      "main.js",
+      "build/**/*"
+    ]
+  }
 }
