@@ -91,7 +91,7 @@ export class HabitController {
                 dr.date AS created_at,
                 COALESCE(SUM(he.dose), 0) AS total
             FROM date_range dr
-            LEFT JOIN habit_entries he ON date(he.created_at) = dr.date AND he.habit_name = ?
+            LEFT JOIN habit_entries he ON date(he.created_at, 'localtime') = dr.date AND he.habit_name = ?
             GROUP BY dr.date
             ORDER BY dr.date ASC
             `,
