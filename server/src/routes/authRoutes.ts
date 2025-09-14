@@ -21,6 +21,4 @@ router.post('/refresh', (req: Request, res: Response) => {
     res.json({ accessToken: tokens.accessToken });
 });
 
-// Trying out typing with the ends of the keyboard much more splayed out and I think I do like it better
-
 export const authRoutes = router;

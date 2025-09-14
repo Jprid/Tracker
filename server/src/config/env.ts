@@ -10,6 +10,7 @@ export function loadEnv() {
     const envSchema = z.object({
         JWT_SECRET: z.string().min(32),
         PORT: z.string().optional().default('3000'),
+        API_BASE_URL: z.string().optional().default('http://localhost:5000/api'),
     });
 
     const parsed = envSchema.safeParse(process.env);

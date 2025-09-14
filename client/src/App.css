@@ -1,3 +1,4 @@
+/* Only global styles, variables, and font faces remain here. All utility classes have been moved to styles/utilities.css. */
 #root {
     text-align: center;
     height: 100vh;
@@ -15,6 +16,7 @@
     --orange-peel: #fd9e02ff;
     --ut-orange: #fb8500ff;
     --border-color: var(--blue-green);
+    font-family: 'VCR Mono', monospace;
 }
 
 *, *::before, *::after {
@@ -27,136 +29,7 @@ body {
     height: 100%;
 }
 
-.page-container {
-    background-color: var(--prussian-blue);
-    color: silver;
-}
-
-.stats-table {
-    height: 100%;
-    border-spacing: 0;
-    border-radius: 2%;
-    border: 1px solid var(--border-color);
-    overflow: hidden;
-    color: silver;
-}
-
-.stats-table > tbody > tr:nth-child(odd) {
-    background-color: var(--cerulean);
-}
-
-.stats-table-header {
-    color: black;
-    border-spacing: 0;
-    border-collapse: separate;
-    border: 1rem solid black;
-    background-color: var(--blue-green);
-}
-
-.card {
-    padding: 1rem;
-    display: grid;
-    grid-template-areas: "s s . c"
-                         ". t t ."
-                         "f f f f";
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
-    background-color: var(--sky-blue);
-    color: var(--prussian-blue);
-}
-
-.card-header {
-    grid-area: s;
-}
-
-.card-subheader {
-   grid-area: c;
-}
-
-.card-body {
-    grid-area: t;
-}
-
-.card-footer {
-    grid-area: f;
-}
-
-
-.font-medium {
-    font-weight: normal;
-}
-
-.text-2xl {
-    font-size: xx-large;
-}
-
-.border-collapse {
-    border-collapse: collapse;
-}
-
-.border-top {
-    border-top: 1px solid var(--border-color);
-}
-
-.border {
-    border: 1px solid black;
-}
-
-.text-lg {
-    font-size: large;
-}
-
-.w-full, .w-100 {
-    width: 100%;
-}
-
-.w-30 {
-    width: 30vw;
-}
-
-.h-full, .h-100 {
-    height: 100%;
-}
-
-.h-70 {
-    height: 70%;
-}
-
-.pd-sm {
-   padding: 0.5rem;
-}
-
-.pd-lg {
-    padding: 5rem;
-}
-
-.mt-sm {
-    margin-top: 0.5rem;
-}
-
-.flex-fill {
-    flex: 1;
-}
-
-.mg-sm {
-    margin: 0.5rem;
-}
-
-.d-flex {
-    display: flex;
-}
-
-.flex-row {
-    flex-flow: row;
-}
-
-.flex-column {
-    flex-flow: column;
-}
-
-.justify-content-center {
-    justify-content: center;
-}
-
-.justify-content-space-evenly {
-    justify-content: space-evenly;
+@keyframes flicker {
+    0% { opacity: 0.95; }
+    100% { opacity: 1; }
 }

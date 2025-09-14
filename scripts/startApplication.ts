@@ -1,8 +1,9 @@
 import { execSync } from 'child_process';
 import { getTokens } from '../server/scripts/generateTokens';
 import {loadEnv} from "../server/src/config/env";
+import concurrently from 'concurrently';
 
-function startMonorepo() {
+async function startMonorepo() {
     try {
         // Generate tokens
         loadEnv();
@@ -13,6 +14,7 @@ function startMonorepo() {
         process.env.REFRESH_TOKEN = tokens.refreshToken;
         process.env.VITE_ACCESS_TOKEN = tokens.accessToken;
         process.env.VITE_REFRESH_TOKEN = tokens.refreshToken;
+        process.env.VITE_API_BASE_URL = 'http://localhost:5000/api';
 
         // Run migrations
         console.log('Running migrations...');
@@ -20,10 +22,25 @@ function startMonorepo() {
 
         // Start server and client concurrently
         console.log('Starting server and client...');
-        execSync('npm run start --prefix server & npm run dev --prefix client', {
-            stdio: 'inherit',
-            env: { ...process.env },
-        });
+        console.log(process.env.API_BASE_URL);
+        await concurrently(
+            [
+                {
+                    command: 'npm run start --prefix server',
+                    name: 'server',
+                    prefixColor: 'blue',
+                },
+                {
+                    command: 'npm run start --prefix client',
+                    name: 'client',
+                    prefixColor: 'green',
+                },
+            ],
+            {
+                stdio: 'inherit',
+                env: { ...process.env },
+            }
+        ).result;
     } catch (error) {
         console.error('Failed to start monorepo:', error);
         process.exit(1);

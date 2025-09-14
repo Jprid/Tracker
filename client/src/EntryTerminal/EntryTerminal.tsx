@@ -2,7 +2,8 @@ import {Component, type JSX} from "react";
 import type {EntryTerminalProps} from "../interfaces.ts";
 
 class EntryTerminalConstants {
-    public static addCommandUsageText: string = "add <substance> <dose>";
+    public static addCommandUsageText: string = "add <entry | medicine> [dose]";
+    public static addEntryUsageText: string = "add <entry>";
     public static newDayCommandUsageText: string = "new day [<save>]";
     public static saveCommandUsageText: string = "save <medium>";
     public static timeTransform: () => string = () => new Date().toLocaleTimeString('en-US', {hour: 'numeric', minute: 'numeric', hour12: true});
@@ -17,8 +18,6 @@ class EntryTerminal extends Component<EntryTerminalProps, object> {
 
     private commands: string[] = [
         EntryTerminalConstants.addCommandUsageText,
-        EntryTerminalConstants.newDayCommandUsageText,
-        EntryTerminalConstants.saveCommandUsageText,
     ];
 
     private handleSubmit = (): void => {
@@ -43,24 +42,25 @@ class EntryTerminal extends Component<EntryTerminalProps, object> {
         const dose = parseFloat(parts[2]);
         const notes = parts.slice(3).join(' ');
         if (!isNaN(dose)) {
-            this.props.onAdd({time, substance, dose, notes});
+            this.props.onAdd({time, entry_type: substance, dose, notes});
             this.commandInput!.value = '';
         }
+
     }
 
     render(): JSX.Element {
         return (
-            <div className="mb-4 w-full p-3 bg-gray-50 rounded">
-                <h4 className="font-medium mb-2">Add Entry (Terminal)</h4>
-                <div className="w-full">
+            <div className="mb-4 w-full p-3 bg-gray-50 rounded command-container">
+                <div className="w-full command-display">
+                    <h3>Commands</h3>
                     {this.commands.map((cmd: string) => <p>{cmd}</p>)}
                 </div>
                 <div className="d-flex flex-row">
                     <input
                         // @ts-ignore
                         ref={(r) => (this.commandInput = r)}
-                        placeholder="add substance dose notes..."
-                        className="d-flex mg-sm pd-sm border flex-fill"
+                        placeholder="input command"
+                        className="d-flex mg-sm pd-sm border flex-fill console-input"
                         onKeyDown={(e) => {
                             if (e.key === 'Enter') this.handleSubmit();
                         }}

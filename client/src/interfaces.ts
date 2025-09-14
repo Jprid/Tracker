@@ -1,9 +1,17 @@
+import type {StatsComponent} from "./stats/Stats.tsx";
+
 export interface SubstanceEntry {
     id: number;
     time: string;
-    substance: string;
+    entry_type: string;
     dose: number;
     notes: string;
+}
+
+export interface Entry {
+    created_at: Date;
+    habit_name: string;
+    dose: number;
 }
 
 export interface SubstanceStats {
@@ -24,10 +32,14 @@ export interface SubstanceTableState {
 
 export interface StatsComponentProps {
     entries: SubstanceEntry[];
+    dayTotals: DayTotals[];
 }
 
+export type DayTotals = { day: number; total: number }[];
+
 export interface StatsComponentState {
-    substanceStats: { [key: string]: SubstanceStats};
+    stats: { [key: string]: SubstanceStats};
+    dayTotals: DayTotals[];
 }
 export interface EntryTerminalProps {
     onAdd: (entry: Omit<SubstanceEntry, 'id'>) => void;

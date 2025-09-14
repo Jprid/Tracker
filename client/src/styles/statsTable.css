@@ -1,0 +1,29 @@
+/* Styles for the stats table and related elements */
+.stats-table {
+    height: 100%;
+    border-spacing: 0;
+    border-radius: 2%;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    color: silver;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.stats-table > tbody > tr:nth-child(odd) {
+    background-color: var(--cerulean);
+}
+
+.stats-table-header {
+    color: black;
+    border-spacing: 0;
+    border-collapse: separate;
+    border: 1rem solid black;
+    background-color: var(--blue-green);
+}
+
+

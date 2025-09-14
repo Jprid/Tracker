@@ -11,11 +11,12 @@
     "rootDir": ".",
     "sourceMap": true,
     "noEmit": true,
-    "allowImportingTsExtensions": true
+    "allowImportingTsExtensions": true,
+    "allowArbitraryExtensions": true,
   },
   "ts-node": {
     "esm": true,
-    "experimentalSpecifierResolution": "node"
+    "experimentalSpecifierResolution": "node",
   },
   "include": ["**/*"],
   "exclude": ["./node_modules"]

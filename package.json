@@ -1,5 +1,5 @@
 {
-  "name": "web-habit-tracker",
+  "name": "tracker",
   "version": "1.0.0",
   "description": "this is for the monorepo used to run both the front and back end",
   "main": "main.js",
@@ -22,10 +22,11 @@
   ],
   "allowImportingTsExtensions": true,
   "dependencies": {
+    "concurrently": "^9.2.1",
     "tsx": "^4.20.5"
   },
   "devDependencies": {
-    "electron": "^29.0.0",
+    "electron": "^38.0.0",
     "electron-builder": "^24.6.0"
   },
   "build": {

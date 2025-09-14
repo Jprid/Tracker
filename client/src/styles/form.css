@@ -1,0 +1,14 @@
+/* Date display styles */
+.date-display {
+    background-color: black;
+    font-family: 'VCR Mono', monospace;
+}
+
+/* Checkbox styles */
+.checkbox {
+    content: " ";
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid var(--border-color);
+}
+

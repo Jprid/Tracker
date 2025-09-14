@@ -19,7 +19,7 @@ export function generateTokens(userId: number = 123, role: string = 'admin'): { 
     const accessPayload: AccessTokenPayload = { userId, role };
     const refreshPayload: RefreshTokenPayload = { userId };
 
-    const accessToken = jwt.sign(accessPayload, process.env.JWT_SECRET!, { expiresIn: '15m' });
+    const accessToken = jwt.sign(accessPayload, process.env.JWT_SECRET!, { expiresIn: '3h' });
     const currentRefreshToken = jwt.sign(refreshPayload, process.env.JWT_SECRET!, { expiresIn: '7d' });
 
     currentAccessToken = accessToken;

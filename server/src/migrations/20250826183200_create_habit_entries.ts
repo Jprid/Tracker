@@ -5,6 +5,7 @@ export async function up(knex: Knex): Promise<void> {
         table.increments('id').primary();
         table.integer('day_id').notNullable().references('id').inTable('days').onDelete('CASCADE');
         table.string('habit_name').notNullable();
+        table.decimal('dose', 10, 2).notNullable();
         table.boolean('completed').notNullable().defaultTo(false);
         table.timestamp('created_at').defaultTo(knex.fn.now());
     });

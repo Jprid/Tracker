@@ -1,0 +1,28 @@
+/* Page container styles */
+.page-container {
+    background-color: var(--prussian-blue);
+    color: silver;
+}
+
+/* Command display styles */
+.command-display {
+    justify-content: flex-start;
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+    padding-left: 0.5rem;
+}
+
+.command-container {
+    background-color: black;
+    display: flex;
+    flex-flow: column;
+}
+
+.console-input {
+    background-color: black;
+    color: silver;
+    font-family: 'VCR Mono', monospace;
+    animation: flicker 1s infinite alternate;
+}
+

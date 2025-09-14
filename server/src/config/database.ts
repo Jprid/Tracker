@@ -1,7 +1,7 @@
 import knex, { type Knex } from 'knex';
 import config from '../../knexfile.ts';
 
-let db: Knex | null = null;
+export let db: Knex | null = null;
 
 export async function initializeDatabase(): Promise<Knex> {
     if (db) return db;
