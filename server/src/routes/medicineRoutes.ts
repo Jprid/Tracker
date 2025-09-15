@@ -1,6 +1,6 @@
 import {Router, type Request, type Response} from "express";
 import {type Knex} from "knex";
-import {HabitController} from "../controllers/habitController.ts";
+import {MedicineController} from "../controllers/medicineController.ts";
 import {authenticateToken} from "../middleware/authMiddleware.ts";
 import {addDays, format, setHours} from "date-fns";
 import {authRoutes} from "./authRoutes.ts";
@@ -10,7 +10,7 @@ export const initializeRoutes = async (db: Knex): Promise<Router> => {
 
     // Initialize Knex with SQLite
     // Instantiate controller with Knex instance
-    const habitController = new HabitController(db);
+    const habitController = new MedicineController(db);
 
     // Route for getting today's habits
     router.get(

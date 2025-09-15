@@ -5,21 +5,33 @@ import type {DayTotals, SubstanceEntry} from "./interfaces.ts";
 import {Table} from "./stats/Table.tsx";
 import {EntryTerminal} from "./EntryTerminal/EntryTerminal";
 import {getEntries, addEntry, getDayTotals} from './Services/habitService';
+import { BrowserRouter } from 'react-router-dom';
 
 interface AppState {
     entries: SubstanceEntry[];
     dayTotals: DayTotals[];
+    selectedTab: 'entry' | 'medicine';
 }
+
+function getTabFromQuery(search: string): 'entry' | 'medicine' {
+    const params = new URLSearchParams(search);
+    const tab = params.get('tab');
+    console.log(tab);
+    return tab as 'entry' | 'medicine';
+}
+
 class App extends Component<object, AppState> {
     private statsRef: RefObject<StatsComponent | null>;
     constructor(props: object) {
         super(props);
         this.save = this.save.bind(this);
         this.clear = this.clear.bind(this);
+        this.handleTabChange = this.handleTabChange.bind(this);
         this.statsRef = createRef<StatsComponent>();
         this.state = {
             entries:  [],
-            dayTotals: []
+            dayTotals: [],
+            selectedTab: getTabFromQuery(window.location.search) || 'entry',
         };
     }
 
@@ -28,7 +40,8 @@ class App extends Component<object, AppState> {
             const date = new Date().toLocaleDateString().replaceAll('/', '-');
             const entries = await getEntries(date, import.meta.env.VITE_ACCESS_TOKEN);
             const dayTotals = await getDayTotals();
-            this.setState({entries, dayTotals});
+            const tab = getTabFromQuery(window.location.search);
+            this.setState({entries, dayTotals, selectedTab: tab});
         } catch (error) {
             console.error(error);
         }
@@ -67,16 +80,31 @@ class App extends Component<object, AppState> {
         return;
     }
 
+    private handleTabChange(tab: 'entry' | 'medicine'): void {
+        console.log('Tab changed to:', tab);
+        this.setState({selectedTab: tab});
+        const params = new URLSearchParams(window.location.search);
+        params.set('tab', tab);
+        window.history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
+    }
+
     render(): JSX.Element {
         return (
-            <div className="page-container d-flex justify-content-center align-items-center flex-column w-full h-full">
-                <h1 className="text-2xl font-bold">Tracker</h1>
-                <div className="w-full d-flex flex-row w-full h-full">
-                    <StatsComponent entries={this.state.entries} dayTotals={this.state.dayTotals} ref={this.statsRef} />
-                    <Table entries={this.state.entries} onDataChange={this.handleTableDataChange} />
+            <BrowserRouter>
+                <div className="page-container d-flex justify-content-center align-items-center flex-column w-full h-full">
+                    <h1 className="text-2xl font-bold">Tracker</h1>
+                    <div className="w-full d-flex flex-row h-full">
+                        <StatsComponent entries={this.state.entries} dayTotals={this.state.dayTotals} ref={this.statsRef} />
+                        <Table
+                            entries={this.state.entries}
+                            onDataChange={this.handleTableDataChange}
+                            selectedTab={this.state.selectedTab}
+                            onTabChange={this.handleTabChange}
+                        />
+                    </div>
+                    <EntryTerminal entries={this.state.entries} onClear={this.clear} onAdd={this.addEntry} onSave={this.save}/>
                 </div>
-                <EntryTerminal entries={this.state.entries} onClear={this.clear} onAdd={this.addEntry} onSave={this.save}/>
-            </div>
+            </BrowserRouter>
         );
     }
 }

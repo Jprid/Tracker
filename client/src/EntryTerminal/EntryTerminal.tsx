@@ -42,7 +42,7 @@ class EntryTerminal extends Component<EntryTerminalProps, object> {
         const dose = parseFloat(parts[2]);
         const notes = parts.slice(3).join(' ');
         if (!isNaN(dose)) {
-            this.props.onAdd({time, entry_type: substance, dose, notes});
+            this.props.onAdd({time, name: substance, dose, notes});
             this.commandInput!.value = '';
         }
 
@@ -53,7 +53,7 @@ class EntryTerminal extends Component<EntryTerminalProps, object> {
             <div className="mb-4 w-full p-3 bg-gray-50 rounded command-container">
                 <div className="w-full command-display">
                     <h3>Commands</h3>
-                    {this.commands.map((cmd: string) => <p>{cmd}</p>)}
+                    {this.commands.map((cmd: string) => <p className="command-text">{cmd}</p>)}
                 </div>
                 <div className="d-flex flex-row">
                     <input

@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser';
 import { authRoutes } from './routes/authRoutes.ts';
 import { initializeDatabase } from './config/database.ts';
 import { getTokens } from '../scripts/generateTokens.ts';
-import {initializeRoutes} from "./routes/habitRoutes.ts";
+import {initializeRoutes} from "./routes/medicineRoutes.ts";
 
 async function startServer() {
     getTokens(); // Ensure tokens are set in process.env

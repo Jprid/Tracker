@@ -41,7 +41,7 @@ export async function addEntry(entry: Omit<SubstanceEntry, 'id'>, accessToken: s
             'Authorization': 'Bearer ' + accessToken
         },
         body: JSON.stringify({
-            habit_name: entry.entry_type,
+            habit_name: entry.name,
             dose: entry.dose,
             notes: entry.notes,
             completed: true
@@ -56,7 +56,7 @@ function mapEntries(entries: any[]): SubstanceEntry[] {
             hour: '2-digit', minute: '2-digit', hour12: true,
             timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
         }),
-        entry_type: entry.habit_name,
+        name: entry.name,
         dose: entry.dose,
         notes: entry.notes,
         completed: entry.completed,
@@ -75,6 +75,6 @@ export async function getDayTotals() {
         console.error('Failed to fetch day totals');
     }
     const json = await response.json();
-    // console.debug(json);
-    return json.entries.map(x =>{ return {day: parseInt(x.created_at.replace('2025-', '').split('-')[1]), total: x.total}});
+    console.debug(json);
+    return json.entries.map(x =>{ return {day: parseInt(x.created_at.split('-')[2]), total: x.total}});
 }

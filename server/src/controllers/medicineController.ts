@@ -10,7 +10,7 @@ export interface Entry {
     completed: boolean;
 }
 
-export class HabitController {
+export class MedicineController {
     private db: Knex;
     public constructor(db: Knex) {
         this.db = db;
@@ -35,7 +35,7 @@ export class HabitController {
         // Query habit_entries for those day_ids
         console.log(start);
         console.log(end);
-        const entries = await this.db<Entry>('habit_entries')
+        const entries = await this.db<Entry>('medicine')
             .where('created_at', '>=', start)
             .andWhere('created_at', '<', end);
         console.log(`Entries from ${start} to ${end}:`, JSON.stringify(entries));
@@ -45,10 +45,9 @@ export class HabitController {
 
     public async createHabitEntry(req: Request, res: Response, next: any) {
         console.log(req.body);
-        const { date, habit_name, dose, completed } = req.body ;
+        const { habit_name, dose } = req.body ;
         try {
-            const day_id = (await this.getDayId(new Date(date))).id;
-            return this.db.insert({ day_id, habit_name, dose, completed }).into('habit_entries');
+            return this.db.insert({ name: habit_name, dose }).into('medicine');
         } catch (error) {
             next(error);
         }
@@ -57,7 +56,7 @@ export class HabitController {
     public async updateHabitEntry(req: Request, res: Response, next: any) {
         const { id, name, dose, completed } = req.body;
         try {
-            await this.db('habits')
+            await this.db('medicine')
                 .where({ id })
                 .update({ name, dose, completed });
             res.status(200).json({ message: 'Habit entry updated.' });
@@ -69,7 +68,7 @@ export class HabitController {
     public async deleteHabitEntry(req: Request, res: Response, next: any) {
         const { id } = req.body;
         try {
-            await this.db('habits')
+            await this.db('medicine')
                 .where({ id })
                 .del();
             res.status(200).json({ message: 'Habit entry deleted.' });
@@ -91,7 +90,7 @@ export class HabitController {
                 dr.date AS created_at,
                 COALESCE(SUM(he.dose), 0) AS total
             FROM date_range dr
-            LEFT JOIN habit_entries he ON date(he.created_at, 'localtime') = dr.date AND he.habit_name = ?
+            LEFT JOIN medicine he ON date(he.created_at, 'localtime') = dr.date AND he.name = ?
             GROUP BY dr.date
             ORDER BY dr.date ASC
             `,

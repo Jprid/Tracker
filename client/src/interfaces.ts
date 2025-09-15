@@ -1,17 +1,9 @@
-import type {StatsComponent} from "./stats/Stats.tsx";
-
 export interface SubstanceEntry {
     id: number;
     time: string;
-    entry_type: string;
+    name: string;
     dose: number;
     notes: string;
-}
-
-export interface Entry {
-    created_at: Date;
-    habit_name: string;
-    dose: number;
 }
 
 export interface SubstanceStats {
@@ -22,13 +14,12 @@ export interface SubstanceStats {
 
 // Props interfaces
 export interface SubstanceTableProps {
-    onDataChange: (data: SubstanceEntry[]) => void;
-    entries: SubstanceEntry[];
+    onDataChange: (data: SubstanceEntry[]) => void,
+    entries: SubstanceEntry[],
+    selectedTab?: "entry" | "medicine",
+    onTabChange?: (tab: 'entry' | 'medicine') => void
 }
 
-export interface SubstanceTableState {
-    data: SubstanceEntry[];
-}
 
 export interface StatsComponentProps {
     entries: SubstanceEntry[];
@@ -38,12 +29,27 @@ export interface StatsComponentProps {
 export type DayTotals = { day: number; total: number }[];
 
 export interface StatsComponentState {
-    stats: { [key: string]: SubstanceStats};
+    stats: { [key: string]: SubstanceStats };
     dayTotals: DayTotals[];
 }
+
 export interface EntryTerminalProps {
     onAdd: (entry: Omit<SubstanceEntry, 'id'>) => void;
     onSave: (medium: string) => void;
     onClear: () => void;
     entries: SubstanceEntry[];
+}
+
+export interface DataPoint {
+    day: number;
+    total: number;
+}
+
+export interface PivotTableProps {
+    data: DataPoint[];
+}
+
+export class SubstanceTableState {
+    entries: SubstanceEntry[] = [];
+    selectedTab!: "entry" | "medicine";
 }

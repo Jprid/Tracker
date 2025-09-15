@@ -6,8 +6,8 @@ let refreshToken: string | null = null;
 
 export function generateTokens(userId: number = 123, role: string = 'admin'): { accessToken: string; refreshToken: string } {
     if (process.env.ACCESS_TOKEN && process.env.REFRESH_TOKEN) {
-        const token = jwt.decode(process.env.ACCESS_TOKEN);
-        if (token && ((token as JwtPayload)!.exp!) < Date.now() / 1000) {
+        const token: JwtPayload | string | null = jwt.decode(process.env.ACCESS_TOKEN);
+        if (token && token?.exp && token?.exp > Date.now() / 1000) {
             return {
                 accessToken: process.env.ACCESS_TOKEN,
                 refreshToken: process.env.REFRESH_TOKEN,

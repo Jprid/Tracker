@@ -3,7 +3,7 @@ import {expect, test} from "vitest";
 import type {SubstanceEntry} from "../interfaces.ts";
 
 function createEntry(id: number, time: string, dose: number, notes: string, substance: string): SubstanceEntry {
-    return {id, time, dose, notes, entry_type: substance};
+    return {id, time, dose, notes, name: substance};
 }
 
 test ('renders without crashing', async () => {
@@ -12,7 +12,7 @@ test ('renders without crashing', async () => {
 
 test('renders correctly', () => {
     const component = new StatsComponent({
-        entries: [{id: 1, time: '9:00', dose: 60, notes: '', entry_type: 'Caffeine'}]
+        entries: [{id: 1, time: '9:00', dose: 60, notes: '', name: 'Caffeine'}]
     });
     expect(component.state.stats).toBeTruthy();
     console.log(component.state.stats);

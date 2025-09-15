@@ -1,79 +1,75 @@
-# React + TypeScript + Vite
+# Tracker Monorepo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Entry and medicine tracking application which provides a cli-esque interface for tracking habits and medicine
+consumption.
 
-Currently, two official plugins are available:
+This monorepo contains both the client (React + TypeScript + Vite) and server (Node.js + Express + SQLite) for the Habit
+Tracker application. It supports running as a web app and packaging as an Electron desktop app.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Structure
 
-## Expanding the ESLint configuration
+- `client/` — Frontend React app (TypeScript, Vite)
+    - `src/` — Main source code
+        - `App.tsx` — Main app component
+        - `EntryTerminal/` — Entry terminal UI
+        - `Charts/` — Chart components
+        - `stats/` — Stats and Table components
+        - `Services/` — API service layer
+        - `styles/` — CSS modules
+        - `assets/` — Fonts and images
+    - `public/` — Static assets
+    - `package.json` — Client dependencies and scripts
+    - `vite.config.ts` — Vite configuration
+    - `tsconfig.json` — TypeScript config
+- `server/` — Backend API (Node.js, Express, SQLite)
+    - `src/` — Main server code
+        - `app.ts` — Express app
+        - `controllers/` — Route controllers
+        - `middleware/` — Auth middleware
+        - `routes/` — API routes
+        - `services/` — Business logic
+        - `config/` — Database and environment config
+        - `types/` — Type definitions
+    - `data/` — SQLite database
+    - `migrations/` — Database migrations
+    - `package.json` — Server dependencies and scripts
+    - `tsconfig.json` — TypeScript config
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Development
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Client (Web App)
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-# Web Habit Tracker
-
-## Running as Electron Desktop App
-
-1. Build the web app:
+1. Install dependencies:
    ```
+   cd client
+   npm install
+   ```
+2. Start the development server:
+   ```
+   npm run dev
+   ```
+
+### Server (API)
+
+1. Install dependencies:
+   ```
+   cd server
+   npm install
+   ```
+2. Run migrations (if needed):
+   ```
+   npm run migrate
+   ```
+3. Start the server:
+   ```
+   npm run dev
+   ```
+
+### Running as Electron Desktop App
+
+1. Build the client app:
+   ```
+   cd client
    npm run build
    ```
 2. Start Electron:
@@ -81,9 +77,30 @@ export default tseslint.config([
    npm run electron
    ```
 
-## Packaging
+### Packaging Desktop Installer
 
 To build a desktop installer:
+
 ```
 npm run electron-build
 ```
+
+## Linting & Type Checking
+
+- ESLint and TypeScript are configured for both client and server.
+- See `client/eslint.config.js` for recommended React lint rules.
+
+## Features
+
+- Habit entry and tracking
+- Stats and charts
+- Auth (with refresh token)
+- SQLite persistence
+- Electron desktop packaging
+
+## Notes
+
+- See individual `package.json` files for available scripts.
+- Database migrations are in `server/migrations/`.
+- Fonts and assets are in `client/src/assets/`.
+- For API endpoints, see `server/src/routes/`.

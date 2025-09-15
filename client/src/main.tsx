@@ -8,6 +8,7 @@ import './styles/tabs.css'
 import './styles/card.css'
 import './styles/form.css'
 import './styles/console.css'
+import './styles/calendar.css'
 import App from './App'
 
 createRoot(document.getElementById('root')!).render(

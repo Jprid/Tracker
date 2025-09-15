@@ -1,14 +1,7 @@
 import React from 'react';
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import {BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip,} from 'chart.js';
+import {Bar} from 'react-chartjs-2';
+import type {PivotTableProps} from "../interfaces.ts";
 
 ChartJS.register(
     CategoryScale,
@@ -19,21 +12,9 @@ ChartJS.register(
     Legend
 );
 
-interface DataPoint {
-    day: number;
-    total: number;
-}
-
-interface PivotTableProps {
-    data: DataPoint[];
-}
-
 const BarChart: React.FC<PivotTableProps> = ({ data }) => {
-    // Only use the last 10 data points
-    const displayData = data.slice(-10);
-
-    const labels = displayData.map(point => point.day.toString());
-    const totals = displayData.map(point => point.total);
+    const labels = data.map(point => point.day.toString());
+    const totals = data.map(point => point.total);
 
     const options = {
         responsive: true,

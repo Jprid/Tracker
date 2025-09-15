@@ -1,8 +1,12 @@
 /* Only global styles, variables, and font faces remain here. All utility classes have been moved to styles/utilities.css. */
+@font-face {
+    font-family: 'VCR Mono', monospace;
+    src: url('./assets/HomeVideoBold-R90Dv.ttf');
+}
+
 #root {
     text-align: center;
     height: 100vh;
-    font-family: "JetBrains Mono", monospace;
     --licorice: #170312ff;
     --dark-purple: #33032fff;
     --palatinate: #531253ff;
@@ -18,6 +22,7 @@
     --border-color: var(--blue-green);
     font-family: 'VCR Mono', monospace;
 }
+
 
 *, *::before, *::after {
     box-sizing: border-box;

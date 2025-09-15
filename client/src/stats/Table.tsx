@@ -6,54 +6,44 @@ class Table extends Component<SubstanceTableProps, SubstanceTableState & { selec
     constructor(props: SubstanceTableProps) {
         super(props);
         this.state = {
-            ...props,
-            selectedTab: 'entry', // default tab
         };
     }
 
     componentDidMount(): void {
         // Emit initial data to stats component
         this.props.onDataChange(this.props.entries);
-    }
-
-
-    private deleteEntry = (id: number): void => {
-        const newData: SubstanceEntry[] = this.state.data.filter(item => item.id !== id);
-        this.setState({data: newData});
-        // Emit event when data changes
-        this.props.onDataChange(newData);
-    }
-
-    private handleTabChange = (tab: 'entry' | 'medicine') => {
-        this.setState({ selectedTab: tab });
+        this.props.onTabChange?.(this.props.selectedTab!);
     }
 
     render(): JSX.Element {
-        const { selectedTab } = this.state;
         return (<>
             <div className="h-full w-full d-flex flex-column justify-content-center">
                 {/* Tabs */}
                 <div className="tabs mb-4 d-flex flex-row">
+                    {this.renderButton('entry')}
                     <button
-                        className={`tab tab-btn-${selectedTab === 'entry' ? 'active' : ''}`}
-                        onClick={() => this.handleTabChange('entry')}
-                    >Entry Log
-                    </button>
-                    <button
-                        className={`tab tab-btn-${selectedTab === 'medicine' ? 'active' : ''}`}
-                        onClick={() => this.handleTabChange('medicine')}
+                        className={`tab tab-btn-${this.props.selectedTab === 'medicine' ? 'active' : ''}`}
+                        onClick={() => this.onTabChange('medicine')}
                     >Medicine Log
                     </button>
                 </div>
                 {/* Table */}
-                {this.renderTable(selectedTab)}
+                {this.renderTable(this.props.selectedTab!)}
             </div>
         </>);
     }
 
+    private renderButton(entry: "entry" | "medicine" | undefined) {
+        return <button
+            className={`tab tab-btn-${this.props.selectedTab === entry ? 'active' : ''}`}
+            onClick={() => this.onTabChange(entry)}
+        >Entry Log
+        </button>;
+    }
+
     private renderTableContainer(headers: JSX.Element, content: JSX.Element) {
         return (
-            <div className="h-full w-full d-flex flex-column justify-content-center">
+            <div className="table-container d-flex flex-column justify-content-center">
                 <table className="stats-table">
                     <thead className="stats-table-header">
                         <tr>
@@ -69,53 +59,52 @@ class Table extends Component<SubstanceTableProps, SubstanceTableState & { selec
     }
 
     private renderTable(selectedTab: "entry" | "medicine") {
-        return <>
-            {selectedTab === 'entry' && (
-                <div className="h-full w-full d-flex flex-column justify-content-center">
-                    <table className="stats-table">
-                        <thead className="stats-table-header">
-                        <tr>
-                            <th scope="col" className="">Time</th>
-                            <th scope="col" className="">Entry</th>
-                            <th scope="col" className="">Complete</th>
+        if (selectedTab === 'entry') {
+            const headers = (
+                <>
+                    <th scope="col">Time</th>
+                    <th scope="col">Entry</th>
+                    <th scope="col">Complete</th>
+                </>
+            );
+            const content = (
+                <tr>
+                    <td>9AM</td>
+                    <td>Start work</td>
+                    <td className="h-full w-full d-flex flex-row justify-content-center align-items-center">
+                        <div className="checkbox"></div>
+                    </td>
+                </tr>
+            );
+            return this.renderTableContainer(headers, content);
+        }
+        if (selectedTab === 'medicine') {
+            const headers = (
+                <>
+                    <th scope="col">Time</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Dose</th>
+                </>
+            );
+            const content = (
+                <>
+                    {this.props.entries.map((row: SubstanceEntry) => (
+                        <tr key={row.id} className="hover:bg-gray-50">
+                            <td>{row.time}</td>
+                            <td>{row.name}</td>
+                            <td>{row.dose}</td>
                         </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td scope="col">
-                                9AM
-                            </td>
-                            <td>Start work</td>
-                            <td scope="col" className="d-flex"><div className="checkbox"></div></td>
+                    ))}
+                </>
+            );
+            return this.renderTableContainer(headers, content);
+        }
+        return null;
+    }
 
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            )}
-            {selectedTab === 'medicine' && (
-                <div className="d-flex h-full w-full flex-column justify-content-center">
-                    <table className="stats-table border-gray-300">
-                        <thead className="stats-table-header">
-                        <tr>
-                            <th scope="col" className="">Time</th>
-                            <th scope="col" className="">Name</th>
-                            <th scope="col" className="">Dose</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {this.props.entries.map((row: SubstanceEntry) => (
-                            <tr key={row.id} className="hover:bg-gray-50">
-                                <td scope="col" className="">{row.time}</td>
-                                <td scope="col" className="">{row.entry_type}</td>
-                                <td scope="col" className="">{row.dose}</td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
-                </div>
-            )}
-        </>;
+    private onTabChange(tab: 'entry' | 'medicine') {
+       this.setState({selectedTab: tab as 'entry' | 'medicine'});
+       this.props.onTabChange?.(tab);
     }
 }
 

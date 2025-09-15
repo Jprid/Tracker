@@ -13,10 +13,16 @@
     padding-left: 0.5rem;
 }
 
+.command-text {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
 .command-container {
     background-color: black;
     display: flex;
     flex-flow: column;
+    height: 10vh;
 }
 
 .console-input {
