@@ -13,7 +13,7 @@ dist-ssr
 *.local
 .gitconfig
 secrets.json
-.env
+.env*
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -24,3 +24,10 @@ secrets.json
 *.njsproj
 *.sln
 *.sw?
+
+server/data
+server/coverage
+
+# Screenshot automation outputs
+client/screenshots/
+

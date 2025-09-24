@@ -1,0 +1,116 @@
+.date-controls {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.date-controls button {
+    background: none;
+    border: none;
+    color: black;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    height: 24px;
+    width: 24px;
+}
+
+.date-controls button:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: black;
+    }
+
+.date-controls button:active {
+    transform: scale(0.95);
+}
+
+.date-display-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.viewing-date {
+    text-align: center;
+    font-size: 0.9rem;
+    color: black;
+    background: white;
+    font-family: 'VCR Mono', monospace;
+    border: 1px solid black;
+    border-top: none;
+    width: 20vw;
+    display: flex; 
+    flex-flow: column;
+    transition: all 0.6s ease;
+    position: relative;
+    z-index: 0;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    margin-top: -1px;
+}
+
+.viewing-date.visible {
+    transform: translateY(0);
+    margin-top: 0;
+    opacity: 1;
+    max-height: 200px;
+}
+
+.viewing-date p {
+    margin: 0;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+/* Date display styles */
+.date-display {
+    color: black;
+    font-family: 'VCR Mono', monospace;
+    font-size: 1rem;
+    padding: 0.75em 1.5em;
+    border-radius: 0;
+    align-self: flex-start;
+    transition: box-shadow 0.3s, background-color 0.3s;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 500px;
+    background: white;
+    border: 1px solid black;
+    position: relative;
+    z-index: 2;
+}
+
+.date-display:hover {
+    background: white;
+    box-shadow: none;
+}
+
+.date-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+    margin: 0 1rem;
+}
+
+.date-text p {
+    text-align: center;
+    /* background: rgba(255, 255, 255, 0.03); */
+    border-radius: 3px;
+    padding: 0;
+    margin: 0;
+    font-weight: 500;
+    width: auto;
+    color: black;
+    box-sizing: border-box;
+    min-width: 140px;
+}

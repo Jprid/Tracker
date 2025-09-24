@@ -8,6 +8,10 @@
     src: url('./assets/HomeVideoBold-R90Dv.ttf');
 }
 
+@font-face {
+    font-family: 'VCR lite';
+    src: url('./assets/VCR_MONO.ttf');
+}
+
 * {
-    font-family: 'VCR Mono', monospace;
 }

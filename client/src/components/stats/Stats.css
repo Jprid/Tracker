@@ -1,0 +1,144 @@
+.stats-footer {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stats-container {
+    display: flex;
+    flex-flow: column;
+    height: auto;
+    width: 35vw;
+}
+
+/* Entry stats table styles */
+.entry-stats-table-container {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0;
+    padding: 1rem;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 0;
+}
+
+.entry-stats-table {
+    width: 100%;
+    max-width: 500px;
+    border-collapse: collapse;
+    font-family: 'VCR Mono', monospace;
+    color: black;
+    background-color: white;
+    border-radius: 0;
+    overflow: hidden;
+    border: 1px solid black;
+}
+
+.entry-stats-table thead {
+    background-color: white;
+}
+
+.entry-stats-table th {
+    padding: 0.75rem;
+    text-align: left;
+    font-weight: bold;
+    color: black;
+    border-bottom: 1px solid black;
+}
+
+.entry-stats-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s ease;
+}
+
+.entry-stats-table tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.entry-stats-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.entry-stats-table .metric-value {
+    font-weight: bold;
+    color: black;
+    font-size: 1.1em;
+}
+
+.medicine-stats-table th {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+}
+
+.medicine-stats-table {
+    border-radius: 0;
+}
+
+.medicine-stats-table .metric-value {
+    font-size: 0.9em;
+}
+
+/* Chart section styles */
+.chart-section {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: white;
+    border: 1px solid black;
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.chart-title {
+    margin: 0;
+    color: black;
+    font-family: 'VCR Mono', monospace;
+}
+
+.chart-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.chart-label {
+    font-size: 0.9rem;
+    color: black;
+    font-family: 'VCR Mono', monospace;
+}
+
+.chart-buttons {
+    display: flex;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+}
+
+.chart-button {
+    padding: 0.25rem 0.5rem;
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+    font-family: 'VCR Mono', monospace;
+    font-size: 0.7rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.chart-button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: black;
+}
+
+.chart-button.active {
+    background-color: black;
+    color: white;
+    border-color: black;
+}

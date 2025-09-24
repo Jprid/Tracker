@@ -1,25 +1,20 @@
 /* Only global styles, variables, and font faces remain here. All utility classes have been moved to styles/utilities.css. */
-@font-face {
-    font-family: 'VCR Mono', monospace;
-    src: url('./assets/HomeVideoBold-R90Dv.ttf');
-}
-
 #root {
     text-align: center;
     height: 100vh;
-    --licorice: #170312ff;
-    --dark-purple: #33032fff;
-    --palatinate: #531253ff;
-    --cadet-gray: #a0acadff;
-    --celadon: #97d8b2ff;
-    --sky-blue: #8ecae6ff;
-    --blue-green: #219ebcff;
-    --cerulean: #126782ff;
-    --prussian-blue: #023047ff;
-    --selective-yellow: #ffb703ff;
-    --orange-peel: #fd9e02ff;
-    --ut-orange: #fb8500ff;
-    --border-color: var(--blue-green);
+    --licorice: black;
+    --dark-purple: black;
+    --palatinate: black;
+    --cadet-gray: black;
+    --celadon: black;
+    --sky-blue: black;
+    --blue-green: black;
+    --cerulean: black;
+    --prussian-blue: white;
+    --selective-yellow: black;
+    --orange-peel: black;
+    --ut-orange: black;
+    --border-color: black;
     font-family: 'VCR Mono', monospace;
 }
 
@@ -32,9 +27,99 @@ body {
     margin: 0;
     width: 100%;
     height: 100%;
+    background-color: white;
+    color: black;
 }
 
 @keyframes flicker {
     0% { opacity: 0.95; }
     100% { opacity: 1; }
+}
+
+.header-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    justify-content: space-between;
+    width: 100%;
+    height: 20vh;
+    background: white;
+    border: 1px solid black;
+    box-shadow: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.header-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+
+}
+
+.header-container h1 {
+    font-family: 'VCR Mono', monospace;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: black;
+    letter-spacing: 0.2em;
+    margin: 0;
+    z-index: 1;
+}
+
+@keyframes header-scan {
+    0% { left: -100%; }
+    50% { left: 100%; }
+    100% { left: -100%; }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .header-container h1 {
+        font-size: 2rem;
+        letter-spacing: 0.15em;
+    }
+}
+
+@keyframes neon-glow {
+    from {
+        box-shadow: none;
+        text-shadow: none;
+    }
+    to {
+        box-shadow: none;
+        text-shadow: none;
+    }
+}
+
+/* Layout containers moved from other files */
+.page-container {
+    background-color: white;
+    color: black;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+.main-content-container {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    gap: 5rem;
 }

@@ -70,9 +70,95 @@
     border-collapse: collapse;
 }
 .border-top {
-    border-top: 1px solid var(--border-color);
+    border-top: 1px solid black;
 }
 .border {
     border: 1px solid black;
+}
+
+/* Button utilities consolidated from various files */
+.btn {
+    padding: 0.25rem 0.5rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 0.875rem;
+}
+
+.btn-primary {
+    padding: 10px 20px;
+    background: white;
+    color: black;
+    border: 1px solid black;
+    border-radius: 0;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-primary:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.btn-cancel {
+    padding: 8px 16px;
+    background: white;
+    color: black;
+    border: 1px solid black;
+    border-radius: 0;
+}
+
+.btn-confirm {
+    padding: 8px 16px;
+    background: black;
+    color: white;
+    border: 1px solid black;
+    border-radius: 0;
+}
+
+.btn-link {
+    color: black;
+    text-decoration: none;
+}
+
+.btn-link:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 0;
+}
+
+/* Form/UI utilities moved from Stats.css */
+.type-container {
+    display: flex;
+    flex-flow: row wrap;
+    height: 10vh;
+    justify-content: space-evenly;
+    margin-top: 1rem;
+}
+
+.selection-panel {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    width: 100%;
+    height: 10vh;
+}
+
+.type-button {
+    font-family: 'VCR Mono';
+    font-size: 0.75rem;
+    height: 25%;
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+    border-radius: 0;
+}
+
+/* State utilities */
+.empty-state {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    color: black;
 }
 

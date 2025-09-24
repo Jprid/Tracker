@@ -3,12 +3,10 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { authRoutes } from './routes/authRoutes.ts';
 import { initializeDatabase } from './config/database.ts';
-import { getTokens } from '../scripts/generateTokens.ts';
 import {initializeRoutes} from "./routes/medicineRoutes.ts";
+import {initializeEntriesRoutes} from "./routes/entriesRoutes.ts";
 
 async function startServer() {
-    getTokens(); // Ensure tokens are set in process.env
-
     const db = await initializeDatabase();
     const app: Express = express();
 
@@ -25,8 +23,10 @@ async function startServer() {
     app.use(cookieParser());
 
     const medicineRoutes = await initializeRoutes(db);
+    const entriesRoutes = await initializeEntriesRoutes(db);
     app.use('/api/auth', authRoutes);
     app.use('/api', medicineRoutes);
+    app.use('/api', entriesRoutes);
 
     const PORT = process.env.SERVER_PORT || 3000;
     app.listen(PORT, () => {

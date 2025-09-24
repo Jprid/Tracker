@@ -1,5 +1,11 @@
 # Tracker Monorepo
 
+![Demo Image](./images/05-entry-log-tab.png)
+
+# Demonstration images
+
+[Image Folder](./images)
+
 Entry and medicine tracking application which provides a cli-esque interface for tracking habits and medicine
 consumption.
 

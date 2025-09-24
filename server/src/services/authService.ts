@@ -1,29 +1,23 @@
-import jwt, {type JwtPayload} from 'jsonwebtoken';
-import type { AccessTokenPayload, RefreshTokenPayload } from '../types/auth.ts';
+import jwt from 'jsonwebtoken';
+import logger from '../utils/logger.ts';
 
-let currentAccessToken: string | null = null;
-let refreshToken: string | null = null;
+// In-memory token storage (in production, use Redis or database)
+const tokenStore = new Map<string, { accessToken: string; refreshToken: string; expiresAt: number }>();
 
-export function generateTokens(userId: number = 123, role: string = 'admin'): { accessToken: string; refreshToken: string } {
-    if (process.env.ACCESS_TOKEN && process.env.REFRESH_TOKEN) {
-        const token: JwtPayload | string | null = jwt.decode(process.env.ACCESS_TOKEN);
-        if (token && token?.exp && token?.exp > Date.now() / 1000) {
-            return {
-                accessToken: process.env.ACCESS_TOKEN,
-                refreshToken: process.env.REFRESH_TOKEN,
-            };
-        } else {
-            console.warn('Token is invalid or expired, generating new tokens');
-        }
-    }
-    const accessPayload: AccessTokenPayload = { userId, role };
-    const refreshPayload: RefreshTokenPayload = { userId };
+export function generateTokens(userId?: string): { accessToken: string; refreshToken: string } {
+    const payload = userId ? { userId } : {};
+    const accessToken = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '15m' });
+    const refreshToken = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '7d' });
 
-    const accessToken = jwt.sign(accessPayload, process.env.JWT_SECRET!, { expiresIn: '3h' });
-    const currentRefreshToken = jwt.sign(refreshPayload, process.env.JWT_SECRET!, { expiresIn: '7d' });
+    // Store tokens in memory with expiration
+    const sessionId = userId || 'anonymous';
+    tokenStore.set(sessionId, {
+        accessToken,
+        refreshToken,
+        expiresAt: Date.now() + (7 * 24 * 60 * 60 * 1000) // 7 days
+    });
 
-    currentAccessToken = accessToken;
-    refreshToken = currentRefreshToken;
+    logger.info({ sessionId }, 'New tokens generated for session');
     return { accessToken, refreshToken };
 }
 
@@ -33,13 +27,52 @@ export function refreshAccessToken(providedRefreshToken: string): { accessToken:
     }
 
     try {
-        const decoded = jwt.verify(providedRefreshToken, process.env.JWT_SECRET!) as RefreshTokenPayload;
-        const newAccessToken = jwt.sign({ userId: decoded.userId, role: 'admin' }, process.env.JWT_SECRET!, { expiresIn: '15m' });
-        currentAccessToken = newAccessToken;
-        console.log('Access token refreshed:', newAccessToken);
+        // Find the session that owns this refresh token
+        let sessionId: string | undefined;
+        for (const [id, tokens] of tokenStore.entries()) {
+            if (tokens.refreshToken === providedRefreshToken) {
+                sessionId = id;
+                break;
+            }
+        }
+
+        if (!sessionId) {
+            return null;
+        }
+
+        jwt.verify(providedRefreshToken, process.env.JWT_SECRET!);
+
+        // Generate new access token
+        const payload = sessionId !== 'anonymous' ? { userId: sessionId } : {};
+        const newAccessToken = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '15m' });
+
+        // Update stored tokens
+        const currentTokens = tokenStore.get(sessionId)!;
+        tokenStore.set(sessionId, {
+            ...currentTokens,
+            accessToken: newAccessToken
+        });
+
         return { accessToken: newAccessToken, refreshToken: providedRefreshToken };
     } catch (err) {
-        console.error('Invalid refresh token, generating new tokens', err);
-        return generateTokens();
+        logger.error({ err }, 'Invalid refresh token');
+        return null;
     }
+}
+
+export function getTokensForSession(sessionId: string = 'anonymous'): { accessToken: string; refreshToken: string } | null {
+    const tokens = tokenStore.get(sessionId);
+    if (!tokens || tokens.expiresAt < Date.now()) {
+        return null;
+    }
+    return { accessToken: tokens.accessToken, refreshToken: tokens.refreshToken };
+}
+
+export function invalidateSession(sessionId: string): void {
+    tokenStore.delete(sessionId);
+}
+
+// Test helper function to clear token store
+export function clearTokenStore(): void {
+    tokenStore.clear();
 }

@@ -1,0 +1,37 @@
+/* Styles for tabs */
+.tabs {
+    background-color: white;
+    font-family: 'VCR Mono', monospace;
+    width: 100%;
+    border-bottom: none;
+    border-radius: 0;
+    border: 1px solid black;
+}
+
+.tab {
+    background-color: white;
+    border: none;
+    width: 10vw;
+    height: 2.5vh;
+    color: black;
+    font-family: 'VCR Mono', monospace;
+    font-weight: normal;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: 0;
+}
+
+.tab:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: black;
+}
+
+.tab-btn-active {
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    border-color: black;
+}

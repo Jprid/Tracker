@@ -1,0 +1,13 @@
+/* Chart Styles */
+.bar-chart-container {
+    height: 250px;
+    width: 250px;
+    background: white;
+    padding: 16px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    margin: 1vh;
+    border: 1px solid black;
+}
